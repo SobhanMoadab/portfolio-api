@@ -12,7 +12,7 @@ import { CategoryDTO } from '../dto/category.dto';
 import { Response } from 'express';
 import { CategoryService } from './category.service';
 
-@Controller('dashboard/categorys')
+@Controller('dashboard/categories')
 export class CategoryController {
   constructor(private readonly categoryService: CategoryService) {}
 
@@ -22,14 +22,17 @@ export class CategoryController {
     return res.status(201).json({ msg: 'success' });
   }
 
-  @Put('id')
+  @Put(':id')
   async updateCategory(
     @Body() categoryDTO: CategoryDTO,
-    @Param() params: { id: number },
+    @Param() params: { id: string },
     @Res() res: Response,
   ) {
-    await this.categoryService.updateCategory({ id: params.id }, categoryDTO);
-    return res.status(200).json({ msg: 'success' });
+    const result = await this.categoryService.updateCategory(
+      { id: parseInt(params.id) },
+      categoryDTO,
+    );
+    return res.status(200).json({ msg: 'success', data: result });
   }
 
   @Get()
@@ -38,9 +41,13 @@ export class CategoryController {
     return res.status(200).json({ msg: 'success', data: categories });
   }
 
-  @Delete()
-  async deleteCategory(@Body() categoryDTO: CategoryDTO, @Res() res: Response) {
-    await this.categoryService.createCategory({ name: categoryDTO.name });
+  @Delete(':id')
+  async deleteCategory(
+    @Param()
+    params: { id: string },
+    @Res() res: Response,
+  ) {
+    await this.categoryService.deleteCategory({ id: parseInt(params.id) });
     return res.status(204).json({ msg: 'success' });
   }
 }

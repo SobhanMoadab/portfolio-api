@@ -16,7 +16,7 @@ import { Response } from 'express';
 
 @Controller('dashboard/tags')
 export class TagController {
-  constructor(private readonly tagService: TagService) { }
+  constructor(private readonly tagService: TagService) {}
 
   @Post()
   async createTag(@Body() tagDTO: TagDTO, @Res() res: Response) {
@@ -31,7 +31,10 @@ export class TagController {
     params: { id: string },
     @Res() res: Response,
   ) {
-    const result = await this.tagService.updateTag({ id: parseInt(params.id) }, tagDTO);
+    const result = await this.tagService.updateTag(
+      { id: parseInt(params.id) },
+      tagDTO,
+    );
     return res.status(200).json({ msg: 'success', data: result });
   }
 
