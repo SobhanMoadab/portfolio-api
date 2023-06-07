@@ -15,6 +15,8 @@ export class TagService {
   }
 
   async deleteTag(where: Prisma.TagWhereUniqueInput) {
+    const IsExist = await this.exists(where);
+    if (!IsExist) throw new BadRequestException('Tag does not exists');
     await this.prisma.tag.delete({ where });
   }
 

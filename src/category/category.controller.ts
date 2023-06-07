@@ -33,7 +33,7 @@ export class CategoryController {
   }
 
   @Get()
-  async getCategories(@Body() categoryDTO: CategoryDTO, @Res() res: Response) {
+  async getCategories(@Res() res: Response) {
     const categories = await this.categoryService.getCategories();
     return res.status(200).json({ msg: 'success', data: categories });
   }

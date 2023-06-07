@@ -16,7 +16,7 @@ import { Response } from 'express';
 
 @Controller('dashboard/tags')
 export class TagController {
-  constructor(private readonly tagService: TagService) {}
+  constructor(private readonly tagService: TagService) { }
 
   @Post()
   async createTag(@Body() tagDTO: TagDTO, @Res() res: Response) {
@@ -41,9 +41,14 @@ export class TagController {
     return res.status(200).json({ msg: 'success', data: tags });
   }
 
-  @Delete()
-  async deleteTag(@Body() tagDTO: TagDTO, @Res() res: Response) {
-    await this.tagService.deleteTag({ name: tagDTO.name });
+  @Delete(':id')
+  async deleteTag(
+    @Param()
+    params: { id: string },
+    @Res()
+    res: Response,
+  ) {
+    await this.tagService.deleteTag({ id: parseInt(params.id) });
     return res.status(204).json({ msg: 'success' });
   }
 }
