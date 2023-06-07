@@ -28,7 +28,9 @@ export class TagService {
     where: Prisma.TagWhereUniqueInput,
     data: Prisma.TagUpdateInput,
   ) {
-    await this.prisma.tag.update({
+    const IsExist = await this.exists(where);
+    if (!IsExist) throw new BadRequestException('Tag does not exists');
+    return await this.prisma.tag.update({
       data,
       where,
     });

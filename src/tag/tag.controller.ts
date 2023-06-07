@@ -31,8 +31,8 @@ export class TagController {
     params: { id: string },
     @Res() res: Response,
   ) {
-    await this.tagService.updateTag({ id: parseInt(params.id) }, tagDTO);
-    return res.status(200).json({ msg: 'success' });
+    const result = await this.tagService.updateTag({ id: parseInt(params.id) }, tagDTO);
+    return res.status(200).json({ msg: 'success', data: result });
   }
 
   @Get()
